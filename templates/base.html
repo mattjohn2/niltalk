@@ -19,7 +19,8 @@
 	<link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 	<link href="/static/base.css" rel="stylesheet" />
-	<link href="/static/style.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" title="light" href="/static/light.css">
+        <link rel="alternate stylesheet" type="text/css" title="dark" href="/static/dark.css">
 
 	<script src="/static/lib.js"></script>
 	<script src="/static/app.js"></script>
@@ -28,6 +29,26 @@
 		{{if .Room}}
 			var room_id = "{{.Room.Id}}";
 		{{end}}
+	</script>
+	<script>
+	var style_cookie_name = "chatstyle" ;
+	var style_cookie_duration = 30 ;
+	var style_domain = "domain.com" ;
+
+	function switch_style ( css_title )
+	{
+	  var i, link_tag ;
+	  for (i = 0, link_tag = document.getElementsByTagName("link") ;
+	    i < link_tag.length ; i++ ) {
+	    if ((link_tag[i].rel.indexOf( "stylesheet" ) != -1) &&
+	      link_tag[i].title) {
+	      link_tag[i].disabled = true ;
+	      if (link_tag[i].title == css_title) {
+	        link_tag[i].disabled = false ;
+	      }
+	    }
+	  }
+	}
 	</script>
 </head>
 <body class="{{if .Body}} {{.Body}} {{end}}">
@@ -39,6 +60,10 @@
 		<div class="room-url col6 last">
 		</div>
 	</header>
+	<center><form>
+	<input type="submit" onclick="switch_style('light');return false;" name="theme" value="Light Theme" id="light">
+	<input type="submit" onclick="switch_style('dark');return false;" name="theme" value="Dark Theme" id="dark">
+	</form></center><br>
 	<div id="content">
 		{{template "content" .}}
 	</div>
